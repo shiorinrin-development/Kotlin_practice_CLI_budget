@@ -11,12 +11,12 @@ class BudgetManager(val dataList: MutableList<ExpenseData> = mutableListOf(), va
         val data = ExpenseData(latestID, content, amount, category)
         dataList.add(data)
         println("支出を登録しました")
-        println("登録内容：data")
+        println("登録内容：$data")
     }
 
     fun displayData() {
         for (data in dataList) {
-            println("ID: $data.ID.toString() | $data.content | $data.amount.toString() | $data.category")
+            println("ID: ${data.ID} | ${data.content} | ${data.amount} | ${data.category.label}")
         }
     }
 }
@@ -43,4 +43,5 @@ fun main() {
     displayMenu(mainOptions)
     val budgetManager = BudgetManager()
     budgetManager.addData("ランチ", 1000, Category.FOOD)
+    budgetManager.displayData()
 }
