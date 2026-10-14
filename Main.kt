@@ -19,6 +19,17 @@ class BudgetManager(val dataList: MutableList<ExpenseData> = mutableListOf(), va
             println("ID: ${data.ID} | ${data.content} | ${data.amount} | ${data.category.label}")
         }
     }
+
+    fun searchData(keyword: String) {
+        var flag = false
+        for (data in dataList) {
+            if (keyword in data.content) {
+                println(data.content)
+                flag = true
+            }
+        if (!flag) println("該当する支出はありませんでした。")
+        }
+    }
 }
 
 enum class Category(val label: String) {
@@ -26,7 +37,7 @@ enum class Category(val label: String) {
     TRANSPORT("交通費"),
     LEISURE("娯楽費"),
     GOODS("日用品"),
-    OTEHR("その他")
+    OTHER("その他")
 }
 
 val mainOptions: List<String> = listOf("支出を登録", "支出一覧", "支出を検索", "合計金額を表示", "カテゴリ別集計", "支出を削除", "終了")
@@ -42,6 +53,8 @@ fun main() {
     println("== Expense Manager == ")
     displayMenu(mainOptions)
     val budgetManager = BudgetManager()
-    budgetManager.addData("ランチ", 1000, Category.FOOD)
+    budgetManager.addData("食事（昼）", 1000, Category.FOOD)
     budgetManager.displayData()
+    budgetManager.searchData("昼")
+    budgetManager.searchData("夜")
 }
