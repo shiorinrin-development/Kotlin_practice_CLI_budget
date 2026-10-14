@@ -5,11 +5,13 @@ data class ExpenseData(
     val category:Category
 )
 
-class BudgetManager(val dataList: MutableList<ExpenseData> = mutableListOf(), var latestID: Int = 0) {
+class BudgetManager(val dataList: MutableList<ExpenseData> = mutableListOf(), var latestID: Int = 0, val cumulativeList: MutableList<Int> = mutableListOf(0, 0, 0, 0, 0, 0)) {
     fun addData(content: String, amount: Int, category: Category) {
         latestID += 1
         val data = ExpenseData(latestID, content, amount, category)
         dataList.add(data)
+        cumulativeList[0] += amount
+        cumulativeList[category.id] += amount
         println("支出を登録しました")
         println("登録内容：$data")
     }
@@ -30,14 +32,25 @@ class BudgetManager(val dataList: MutableList<ExpenseData> = mutableListOf(), va
         if (!flag) println("該当する支出はありませんでした。")
         }
     }
+
+    fun displaySum() {
+        println("現在の支出合計は ${cumulativeList[0]}円です。")
+    }
+    
+    fun displayCategorySum() {
+        for (category in Category.entries) {
+            println("${category.label}:  ${cumulativeList[category.id]}円")
+        }
+        println("合計:  ${cumulativeList[0]}")
+    }
 }
 
-enum class Category(val label: String) {
-    FOOD("食費"),
-    TRANSPORT("交通費"),
-    LEISURE("娯楽費"),
-    GOODS("日用品"),
-    OTHER("その他")
+enum class Category(val label: String, val id: Int) {
+    FOOD("食費", 1),
+    TRANSPORT("交通費", 2),
+    LEISURE("娯楽費", 3),
+    GOODS("日用品", 4),
+    OTHER("その他", 5)
 }
 
 val mainOptions: List<String> = listOf("支出を登録", "支出一覧", "支出を検索", "合計金額を表示", "カテゴリ別集計", "支出を削除", "終了")
@@ -54,7 +67,11 @@ fun main() {
     displayMenu(mainOptions)
     val budgetManager = BudgetManager()
     budgetManager.addData("食事（昼）", 1000, Category.FOOD)
-    budgetManager.displayData()
-    budgetManager.searchData("昼")
-    budgetManager.searchData("夜")
+    budgetManager.displaySum()
+    budgetManager.addData("食事（夜）", 2000, Category.OTHER)
+    // budgetManager.displayData()
+    // budgetManager.searchData("昼")
+    // budgetManager.searchData("夜")
+    budgetManager.displaySum()
+    budgetManager.displayCategorySum()
 }
