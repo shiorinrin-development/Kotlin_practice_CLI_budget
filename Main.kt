@@ -43,6 +43,19 @@ class BudgetManager(val dataList: MutableList<ExpenseData> = mutableListOf(), va
         }
         println("合計:  ${cumulativeList[0]}")
     }
+
+    fun deleteData(ID: Int) {
+        var target: ExpenseData? = null
+        for (data in dataList) {
+            if (data.ID == ID) {
+                target = data
+            }
+        }
+        if (target != null) {
+            dataList.remove(target)
+            println("支出を削除しました。")
+        } else println("ID: $ID の支出は存在しません。")
+    }
 }
 
 enum class Category(val label: String, val id: Int) {
@@ -67,11 +80,13 @@ fun main() {
     displayMenu(mainOptions)
     val budgetManager = BudgetManager()
     budgetManager.addData("食事（昼）", 1000, Category.FOOD)
-    budgetManager.displaySum()
-    budgetManager.addData("食事（夜）", 2000, Category.OTHER)
+    // budgetManager.displaySum()
+    // budgetManager.addData("食事（夜）", 2000, Category.OTHER)
     // budgetManager.displayData()
     // budgetManager.searchData("昼")
     // budgetManager.searchData("夜")
-    budgetManager.displaySum()
-    budgetManager.displayCategorySum()
+    // budgetManager.displaySum()
+    // budgetManager.displayCategorySum()
+    budgetManager.deleteData(0)
+    budgetManager.deleteData(1)
 }
