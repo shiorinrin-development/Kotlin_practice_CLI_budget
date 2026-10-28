@@ -77,8 +77,26 @@ fun displayMenu(options: List<String>) {
 
 fun main() {
     println("== Expense Manager == ")
-    displayMenu(mainOptions)
     val budgetManager = BudgetManager()
+    while (true) {
+        displayMenu(mainOptions)
+        var option = readln().toIntOrNull()
+        if (option == null || option >= 8 || option <= 0) {
+            println("1〜7の番号で選択してください。")
+        } else {
+            when (option) {
+                1 -> {
+                    println("登録する支出の内容を入力してください。")
+                    val title = readln().toStringOrNull()
+                    println("登録する支出の金額を入力してください。")
+                    val amount = readln().toIntOrNull()
+                    println("登録するカテゴリを入力してください。")
+                    val category = readln().toStringOrNull()
+                }  
+            }
+        }
+    }
+
     budgetManager.addData("食事（昼）", 1000, Category.FOOD)
     // budgetManager.displaySum()
     // budgetManager.addData("食事（夜）", 2000, Category.OTHER)
